@@ -1,10 +1,10 @@
 export enum Role {
-  ADMIN,
-  USER,
+  ADMIN = 'ADMIN',
+  USER = 'USER',
 }
 
 export enum Status {
-  ACTIVE,
-  PENDING,
-  BLOCKED,
+  ACTIVE = 'ACTIVE',
+  PENDING = 'PENDING',
+  BLOCKED = 'BLOCKED',
 }
