@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import catchAsync from '../../utils/catchAsync';
 import sendResponse from '../../utils/sendResponse';
+import { cookieOptions } from './auth-constants';
 import AuthServices from './auth.services';
 
 const singUp = catchAsync(async (req, res) => {
@@ -13,7 +14,19 @@ const singUp = catchAsync(async (req, res) => {
     data: result,
   });
 });
-const signIn = catchAsync(async (req, res) => {});
+const signIn = catchAsync(async (req, res) => {
+  const payload = req.body;
+  const { accessToken, refreshToken } = await AuthServices.signIn(payload);
+  res.cookie('accessToken', accessToken, cookieOptions);
+  res.cookie('refreshToken', refreshToken, cookieOptions);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Logged in successfully.',
+    data: null,
+  });
+});
 const verifyAccount = catchAsync(async (req, res) => {
   const { token } = req.body;
   await AuthServices.verifyAccount(token);

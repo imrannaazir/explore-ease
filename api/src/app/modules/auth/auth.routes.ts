@@ -9,7 +9,11 @@ router.post(
   validateRequest(AuthValidations.signUpValidator),
   AuthControllers.singUp,
 );
-
+router.post(
+  '/sign-in',
+  validateRequest(AuthValidations.signInValidator),
+  AuthControllers.signIn,
+);
 router.post(
   '/verify-account',
   validateRequest(AuthValidations.verifyAccountValidator),

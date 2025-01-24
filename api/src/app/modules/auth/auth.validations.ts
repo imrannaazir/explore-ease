@@ -7,6 +7,12 @@ const signUpValidator = z.object({
     password: z.string(),
   }),
 });
+const signInValidator = z.object({
+  body: z.object({
+    email: z.string(),
+    password: z.string(),
+  }),
+});
 
 const verifyAccountValidator = z.object({
   body: z.object({
@@ -14,5 +20,9 @@ const verifyAccountValidator = z.object({
   }),
 });
 
-const AuthValidations = { signUpValidator, verifyAccountValidator };
+const AuthValidations = {
+  signUpValidator,
+  signInValidator,
+  verifyAccountValidator,
+};
 export default AuthValidations;
