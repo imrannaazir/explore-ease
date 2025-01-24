@@ -7,7 +7,7 @@ import { TJwtPayload } from './auth.types';
 
 export const verifyToken = async (token: string, secret: string) => {
   try {
-    return await jwt.verify(token, secret);
+    return (await jwt.verify(token, secret)) as TJwtPayload;
   } catch (error) {
     throw new AppError(StatusCodes.UNAUTHORIZED, 'Invalid token');
   }

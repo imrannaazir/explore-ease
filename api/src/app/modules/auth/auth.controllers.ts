@@ -51,7 +51,20 @@ const resendVerificationEmail = catchAsync(async (req, res) => {
   });
 });
 
-const refreshAccessToken = catchAsync(async (req, res) => {});
+const refreshAccessToken = catchAsync(async (req, res) => {
+  const token = req.cookies.refreshToken;
+  const { accessToken, refreshToken } =
+    await AuthServices.refreshAccessToken(token);
+
+  res.cookie('accessToken', accessToken, cookieOptions);
+  res.cookie('refreshToken', refreshToken, cookieOptions);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Retrieved refresh token successfully.',
+    data: null,
+  });
+});
 
 const AuthControllers = {
   singUp,

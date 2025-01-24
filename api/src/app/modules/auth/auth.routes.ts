@@ -22,8 +22,14 @@ router.post(
 
 router.post(
   '/resend-verification-mail',
-  validateRequest(AuthValidations.resendVerificationEmail),
+  validateRequest(AuthValidations.resendVerificationEmailValidator),
   AuthControllers.resendVerificationEmail,
+);
+
+router.post(
+  '/refresh-access-token',
+  validateRequest(AuthValidations.refreshAccessTokenValidator),
+  AuthControllers.refreshAccessToken,
 );
 const AuthRoutes = router;
 export default AuthRoutes;

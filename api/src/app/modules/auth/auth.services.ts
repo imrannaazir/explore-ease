@@ -169,7 +169,43 @@ const resendVerificationEmail = async (email: string) => {
   sendEmail(emailPayload);
 };
 
-const refreshAccessToken = async () => {};
+const refreshAccessToken = async (token: string) => {
+  const isTokenValid = await verifyToken(token, config.jwt_refresh_secret!);
+  if (!isTokenValid) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'Unauthorized access.');
+  }
+
+  const user = await User.findById(isTokenValid?.id);
+  if (!user?.isVerified) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'Your are not verified.');
+  }
+
+  if (user?.status !== Status.ACTIVE) {
+    throw new AppError(
+      StatusCodes.UNAUTHORIZED,
+      `Your account is ${String(user.role).toLowerCase()}.`,
+    );
+  }
+
+  const jwtPayload: TJwtPayload = {
+    id: user._id,
+    email: user.email,
+    role: user.role,
+  };
+
+  const accessToken = generateToken(
+    jwtPayload,
+    config.jwt_access_secret!,
+    config.jwt_access_token_expires_in!,
+  );
+  const refreshToken = generateToken(
+    jwtPayload,
+    config.jwt_refresh_secret!,
+    config.jwt_refresh_token_expires_in!,
+  );
+
+  return { accessToken, refreshToken };
+};
 
 const AuthServices = {
   singUp,
