@@ -19,10 +19,10 @@ const auth = (...requiredRole: Role[]) => {
       );
     }
 
-    const decoded = verifyToken(
+    const decoded = (await verifyToken(
       token as string,
       config.jwt_access_secret as string,
-    ) as JwtPayload;
+    )) as JwtPayload;
 
     if (!decoded) {
       throw new AppError(
@@ -36,6 +36,10 @@ const auth = (...requiredRole: Role[]) => {
 
     if (!isUserExist) {
       throw new AppError(StatusCodes.UNAUTHORIZED, 'Account not founded.');
+    }
+
+    if (!isUserExist?.isVerified) {
+      throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not verified.');
     }
     if (isUserExist?.status === Status.BLOCKED) {
       throw new AppError(

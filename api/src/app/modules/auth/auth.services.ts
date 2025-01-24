@@ -8,7 +8,12 @@ import sendEmail, {
 import { Status } from '../user/user.constants';
 import User from '../user/user.model';
 import { TJwtPayload, TSignInPayload, TSignUpPayload } from './auth.types';
-import { comparePassword, generateToken, hashPassword } from './auth.utils';
+import {
+  comparePassword,
+  generateToken,
+  hashPassword,
+  verifyToken,
+} from './auth.utils';
 
 const singUp = async (payload: TSignUpPayload) => {
   payload.password = await hashPassword(payload?.password);
@@ -98,7 +103,32 @@ const signIn = async (payload: TSignInPayload) => {
   };
 };
 
-const verifyAccount = async () => {};
+const verifyAccount = async (token: string) => {
+  const isTokenValid = (await verifyToken(
+    token,
+    config.jwt_verify_secret!,
+  )) as TJwtPayload;
+  if (!isTokenValid) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'Token is invalid.');
+  }
+
+  const isUserExist = await User.findById(isTokenValid?.id);
+  if (!isUserExist) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'You are not registered.');
+  }
+
+  if (isUserExist.status === Status.BLOCKED) {
+    throw new AppError(
+      StatusCodes.UNAUTHORIZED,
+      'Your account has been blocked.',
+    );
+  }
+
+  await User.findByIdAndUpdate(isUserExist?.id, {
+    status: Status.ACTIVE,
+    isVerified: true,
+  });
+};
 
 const resentVerifyEmail = async () => {};
 

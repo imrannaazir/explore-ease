@@ -14,7 +14,16 @@ const singUp = catchAsync(async (req, res) => {
   });
 });
 const signIn = catchAsync(async (req, res) => {});
-const verifyAccount = catchAsync(async (req, res) => {});
+const verifyAccount = catchAsync(async (req, res) => {
+  const { token } = req.body;
+  await AuthServices.verifyAccount(token);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    message: 'Your are verified, please login.',
+    data: null,
+  });
+});
 const resentVerifyEmail = catchAsync(async (req, res) => {});
 const refreshAccessToken = catchAsync(async (req, res) => {});
 

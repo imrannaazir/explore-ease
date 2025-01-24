@@ -5,8 +5,12 @@ import config from '../../config';
 import AppError from '../../errors/AppError';
 import { TJwtPayload } from './auth.types';
 
-export const verifyToken = (token: string, secret: string) => {
-  return jwt.verify(token, secret);
+export const verifyToken = async (token: string, secret: string) => {
+  try {
+    return await jwt.verify(token, secret);
+  } catch (error) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'Invalid token');
+  }
 };
 
 export const generateToken = (

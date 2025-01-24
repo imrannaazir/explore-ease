@@ -8,5 +8,11 @@ const signUpValidator = z.object({
   }),
 });
 
-const AuthValidations = { signUpValidator };
+const verifyAccountValidator = z.object({
+  body: z.object({
+    token: z.string(),
+  }),
+});
+
+const AuthValidations = { signUpValidator, verifyAccountValidator };
 export default AuthValidations;

@@ -9,5 +9,11 @@ router.post(
   validateRequest(AuthValidations.signUpValidator),
   AuthControllers.singUp,
 );
+
+router.post(
+  '/verify-account',
+  validateRequest(AuthValidations.verifyAccountValidator),
+  AuthControllers.verifyAccount,
+);
 const AuthRoutes = router;
 export default AuthRoutes;
