@@ -14,6 +14,7 @@ const singUp = catchAsync(async (req, res) => {
     data: result,
   });
 });
+
 const signIn = catchAsync(async (req, res) => {
   const payload = req.body;
   const { accessToken, refreshToken } = await AuthServices.signIn(payload);
@@ -27,6 +28,7 @@ const signIn = catchAsync(async (req, res) => {
     data: null,
   });
 });
+
 const verifyAccount = catchAsync(async (req, res) => {
   const { token } = req.body;
   await AuthServices.verifyAccount(token);
@@ -37,14 +39,25 @@ const verifyAccount = catchAsync(async (req, res) => {
     data: null,
   });
 });
-const resentVerifyEmail = catchAsync(async (req, res) => {});
+
+const resendVerificationEmail = catchAsync(async (req, res) => {
+  const { email } = req.body;
+  await AuthServices.resendVerificationEmail(email);
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Resent your account verification email.',
+    data: null,
+  });
+});
+
 const refreshAccessToken = catchAsync(async (req, res) => {});
 
 const AuthControllers = {
   singUp,
   signIn,
   verifyAccount,
-  resentVerifyEmail,
+  resendVerificationEmail,
   refreshAccessToken,
 };
 

@@ -32,7 +32,7 @@ const singUp = async (payload: TSignUpPayload) => {
     config?.jwt_verify_token_expires_in!,
   );
 
-  const redirectUrl = `${config.client_url}/verification-account?token=${verifyToken}`;
+  const redirectUrl = `${config.client_url}/account-verification?token=${verifyToken}`;
   const emailPayload: TEmailPayload = {
     receiver: user?.email,
     subject: 'Activate your account.',
@@ -82,7 +82,7 @@ const signIn = async (payload: TSignInPayload) => {
 
   const jwtPayload: TJwtPayload = {
     email: isUserExist?.email,
-    id: isUserExist?.id,
+    id: isUserExist?._id,
     role: isUserExist?.role,
   };
 
@@ -130,7 +130,44 @@ const verifyAccount = async (token: string) => {
   });
 };
 
-const resentVerifyEmail = async () => {};
+const resendVerificationEmail = async (email: string) => {
+  const isUserExist = await User.findOne({
+    email,
+  });
+
+  if (!isUserExist) {
+    throw new AppError(
+      StatusCodes.NOT_FOUND,
+      'You are not registered, please sign up.',
+    );
+  }
+
+  if (isUserExist.status === Status.BLOCKED) {
+    throw new AppError(StatusCodes.UNAUTHORIZED, 'You has been blocked.');
+  }
+
+  const jwtPayload: TJwtPayload = {
+    id: isUserExist?._id,
+    email: isUserExist.email,
+    role: isUserExist.role,
+  };
+
+  const verificationToken = generateToken(
+    jwtPayload,
+    config.jwt_verify_secret!,
+    config.jwt_verify_token_expires_in!,
+  );
+
+  const redirectUrl = `${config.client_url}/account-verification?token=${verificationToken}`;
+
+  const emailPayload: TEmailPayload = {
+    html: getValidateMailContent({ redirectUrl }),
+    receiver: isUserExist?.email,
+    subject: 'Verify your account.',
+  };
+
+  sendEmail(emailPayload);
+};
 
 const refreshAccessToken = async () => {};
 
@@ -138,7 +175,7 @@ const AuthServices = {
   singUp,
   signIn,
   verifyAccount,
-  resentVerifyEmail,
+  resendVerificationEmail,
   refreshAccessToken,
 };
 export default AuthServices;

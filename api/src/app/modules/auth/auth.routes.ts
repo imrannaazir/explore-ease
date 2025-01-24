@@ -19,5 +19,11 @@ router.post(
   validateRequest(AuthValidations.verifyAccountValidator),
   AuthControllers.verifyAccount,
 );
+
+router.post(
+  '/resend-verification-mail',
+  validateRequest(AuthValidations.resendVerificationEmail),
+  AuthControllers.resendVerificationEmail,
+);
 const AuthRoutes = router;
 export default AuthRoutes;

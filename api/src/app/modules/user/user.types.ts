@@ -1,7 +1,8 @@
+import mongoose from 'mongoose';
 import { Role, Status } from './user.constants';
 
 export type TUser = {
-  id: string;
+  id: mongoose.Types.ObjectId;
   fullName: string;
   email: string;
   role: Role;

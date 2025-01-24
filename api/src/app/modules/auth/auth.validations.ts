@@ -20,9 +20,16 @@ const verifyAccountValidator = z.object({
   }),
 });
 
+const resendVerificationEmail = z.object({
+  body: z.object({
+    email: z.string(),
+  }),
+});
+
 const AuthValidations = {
   signUpValidator,
   signInValidator,
   verifyAccountValidator,
+  resendVerificationEmail,
 };
 export default AuthValidations;
