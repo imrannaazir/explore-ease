@@ -9,22 +9,43 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import getErrorMessage from "@/lib/get-error-message";
+import { useSignUpMutation } from "@/redux/features/auth/api";
 import { signUpValidator } from "@/schemas";
-import { TSignUpProps } from "@/types/auth.types";
+import { TSignUpProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Lock, Mail, User } from "lucide-react";
+import { Eye, EyeOff, Loader2, Lock, Mail, User } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const SignUpPage = () => {
+  const [signUp, { isLoading }] = useSignUpMutation();
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
+  const router = useRouter();
   const form = useForm<TSignUpProps>({
     resolver: zodResolver(signUpValidator),
+    defaultValues: {
+      fullName: "John Doe",
+      email: "john@gmail.com",
+      password: "password123",
+      confirmPassword: "password123",
+    },
   });
 
-  function onSubmit(values: TSignUpProps) {
-    console.log(values);
+  async function onSubmit(values: TSignUpProps) {
+    try {
+      const result = await signUp(values).unwrap();
+      if (result?.success) {
+        toast.success(result?.message);
+        form.reset();
+        router.push("/verify-email");
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
   return (
     <div className="mx-auto max-w-xl space-y-8 w-full ">
@@ -161,8 +182,8 @@ const SignUpPage = () => {
               </FormItem>
             )}
           />
-          <Button className="w-full h-12" type="submit">
-            Sign in
+          <Button disabled={isLoading} className="w-full h-12" type="submit">
+            {isLoading ? <Loader2 /> : "Sign in"}
           </Button>
         </form>
       </Form>

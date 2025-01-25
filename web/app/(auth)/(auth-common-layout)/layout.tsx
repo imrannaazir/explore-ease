@@ -15,8 +15,8 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
               : "up you personal information"
           }`;
   return (
-    <main className="grid grid-cols-3 min-h-screen *:p-6 *:flex *:items-center *:justify-center ">
-      <section className=" bg-primary/10 backdrop-blur-md   flex-col text-center  gap-6 relative">
+    <main className="grid md:grid-cols-2 xl:grid-cols-3 min-h-screen *:p-6   ">
+      <section className=" bg-primary/10 backdrop-blur-md   flex-col text-center  gap-6 relative hidden md:flex items-center justify-center">
         <div className="absolute inset-0 blur-3xl ">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-gradient-to-r from-primary to-purple-600 rounded-full opacity-50 animate-pulse"></div>
         </div>
@@ -31,7 +31,9 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
           {buttonLabel}
         </Button>
       </section>
-      <section className="col-span-2 ">{children}</section>
+      <section className="xl:col-span-2 flex items-center justify-center">
+        {children}
+      </section>
     </main>
   );
 };
