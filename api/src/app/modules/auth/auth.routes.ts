@@ -1,9 +1,12 @@
 import { Router } from 'express';
+import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import AuthControllers from './auth.controllers';
 import AuthValidations from './auth.validations';
 
 const router = Router();
+router.get('/me', auth(), AuthControllers.getMe);
+
 router.post(
   '/sign-up',
   validateRequest(AuthValidations.signUpValidator),
@@ -14,6 +17,8 @@ router.post(
   validateRequest(AuthValidations.signInValidator),
   AuthControllers.signIn,
 );
+
+router.post('/sign-out', AuthControllers.signOut);
 router.post(
   '/verify-account',
   validateRequest(AuthValidations.verifyAccountValidator),

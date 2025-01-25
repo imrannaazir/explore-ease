@@ -11,7 +11,7 @@ import catchAsync from '../utils/catchAsync';
 const auth = (...requiredRole: Role[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
     // token
-    const token = req.headers.authorization;
+    const token = req.cookies.accessToken;
     if (!token) {
       throw new AppError(
         StatusCodes.UNAUTHORIZED,

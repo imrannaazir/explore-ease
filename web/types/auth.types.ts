@@ -3,7 +3,7 @@ import { signInValidator, signUpValidator } from "@/schemas";
 import { z } from "zod";
 
 export type TUser = {
-  id: string;
+  _id: string;
   fullName: string;
   email: string;
   role: Role;
