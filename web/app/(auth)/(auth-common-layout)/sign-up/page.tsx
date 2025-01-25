@@ -40,8 +40,8 @@ const SignUpPage = () => {
       const result = await signUp(values).unwrap();
       if (result?.success) {
         toast.success(result?.message);
+        router.push(`/verify-email?e=${values.email}`);
         form.reset();
-        router.push("/verify-email");
       }
     } catch (error) {
       toast.error(getErrorMessage(error));

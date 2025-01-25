@@ -32,7 +32,7 @@ const singUp = async (payload: TSignUpPayload) => {
     config?.jwt_verify_token_expires_in!,
   );
 
-  const redirectUrl = `${config.client_url}/account-verification?token=${verifyToken}`;
+  const redirectUrl = `${config.client_url}/verification?token=${verifyToken}`;
   const emailPayload: TEmailPayload = {
     receiver: user?.email,
     subject: 'Activate your account.',
@@ -158,7 +158,7 @@ const resendVerificationEmail = async (email: string) => {
     config.jwt_verify_token_expires_in!,
   );
 
-  const redirectUrl = `${config.client_url}/account-verification?token=${verificationToken}`;
+  const redirectUrl = `${config.client_url}/verification?token=${verificationToken}`;
 
   const emailPayload: TEmailPayload = {
     html: getValidateMailContent({ redirectUrl }),

@@ -15,7 +15,30 @@ const authApi = baseApi.injectEndpoints({
         };
       },
     }),
+    resentVerificationEmail: builder.mutation<TResponse<null>, unknown>({
+      query: ({ email }) => {
+        console.log(email, "blah email");
+
+        return {
+          url: "/auth/resend-verification-mail",
+          method: "POST",
+          data: { email },
+        };
+      },
+    }),
+
+    verifyAccount: builder.mutation<TResponse<null>, unknown>({
+      query: (token) => ({
+        url: "/auth/verify-account",
+        method: "POST",
+        data: { token },
+      }),
+    }),
   }),
 });
 
-export const { useSignUpMutation } = authApi;
+export const {
+  useVerifyAccountMutation,
+  useSignUpMutation,
+  useResentVerificationEmailMutation,
+} = authApi;
