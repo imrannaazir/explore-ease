@@ -14,5 +14,13 @@ export type TUser = {
   updated: Date;
 };
 
+export type TJwtPayload = {
+  email: string;
+  id: string;
+  role: Role;
+  iat: number;
+  exp: number;
+};
+
 export type TSignUpProps = z.infer<typeof signUpValidator>;
 export type TSignInProps = z.infer<typeof signInValidator>;

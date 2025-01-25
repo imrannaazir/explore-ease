@@ -12,8 +12,6 @@ if (Object.keys(process.env).length === 0) {
 export default {
   port: process.env.PORT,
   app_url: process.env.APP_URL,
-  origin_url_1: process.env.ORIGIN_URL_1,
-  origin_url_2: process.env.ORIGIN_URL_2,
   database_url: process.env.DATABASE_URL,
   NODE_ENV: process.env.NODE_ENV,
   salt_rounds: process.env.SALT_ROUNDS,
@@ -31,8 +29,6 @@ export default {
     phone_number: process.env.SUPER_ADMIN_PHONE_NUMBER,
   },
   demo_user_email: process.env.DEMO_USER_EMAIL,
-  shipping_amount: process.env.SHIPPING_AMOUNT,
   my_email_address: process.env.MY_EMAIL_ADDRESS,
   email_app_password: process.env.EMAIL_APP_PASSWORD,
-  stripe_api_secret_key: process.env.STRIPE_API_SECRET_KEY,
 };

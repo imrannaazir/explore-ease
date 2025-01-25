@@ -9,15 +9,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import getErrorMessage from "@/lib/get-error-message";
+import { useSignInMutation } from "@/redux/features/auth/api";
 import { signInValidator } from "@/schemas";
 import { TSignInProps } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Loader, Lock, Mail } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 const SignInPage = () => {
   const [open, setOpen] = useState(false);
+  const [signIn, { isLoading }] = useSignInMutation();
+  const router = useRouter();
   const form = useForm<TSignInProps>({
     resolver: zodResolver(signInValidator),
     defaultValues: {
@@ -26,10 +32,17 @@ const SignInPage = () => {
     },
   });
 
-  function onSubmit(values: TSignInProps) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
+  async function onSubmit(values: TSignInProps) {
+    try {
+      const result = await signIn(values).unwrap();
+      if (result?.success) {
+        toast.success(result?.message);
+        router.push(`/`);
+        form.reset();
+      }
+    } catch (error) {
+      toast.error(getErrorMessage(error));
+    }
   }
   return (
     <div className="mx-auto max-w-xl space-y-8 w-full ">
@@ -84,7 +97,11 @@ const SignInPage = () => {
                       </Button>
                     }
                     end={
-                      <Button size={"icon"} onClick={() => setOpen(!open)}>
+                      <Button
+                        type="reset"
+                        size={"icon"}
+                        onClick={() => setOpen(!open)}
+                      >
                         {open ? (
                           <EyeOff className="w-4 h-4" />
                         ) : (
@@ -100,7 +117,11 @@ const SignInPage = () => {
           />
 
           <Button className="w-full h-12" type="submit">
-            Sign in
+            {isLoading ? (
+              <Loader className="animate-spin duration-300" />
+            ) : (
+              "Sign in"
+            )}
           </Button>
         </form>
       </Form>

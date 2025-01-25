@@ -15,6 +15,16 @@ const authApi = baseApi.injectEndpoints({
         };
       },
     }),
+    signIn: builder.mutation<TResponse<null>, unknown>({
+      query: (data: TSignUpProps) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        return {
+          url: "/auth/sign-in",
+          method: "POST",
+          data: data,
+        };
+      },
+    }),
     resentVerificationEmail: builder.mutation<TResponse<null>, unknown>({
       query: ({ email }) => {
         console.log(email, "blah email");
@@ -40,5 +50,6 @@ const authApi = baseApi.injectEndpoints({
 export const {
   useVerifyAccountMutation,
   useSignUpMutation,
+  useSignInMutation,
   useResentVerificationEmailMutation,
 } = authApi;

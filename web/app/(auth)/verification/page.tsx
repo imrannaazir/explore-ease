@@ -66,9 +66,9 @@ const VerifiedState = () => (
     <span className="text-sm text-accent-foreground">
       Now you can fully access our platform
     </span>
-    <Link href="/sing-in">
+    <Link href="/sign-in">
       <Button variant="outline" size="sm" className="px-6">
-        Go To Login
+        Go To Sign in
       </Button>
     </Link>
   </>

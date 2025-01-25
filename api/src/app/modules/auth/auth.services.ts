@@ -49,6 +49,8 @@ const signIn = async (payload: TSignInPayload) => {
     },
     {
       password: 1,
+      email: 1,
+      role: 1,
     },
   );
 
@@ -58,6 +60,8 @@ const signIn = async (payload: TSignInPayload) => {
       'Invalid one or more credentials.',
     );
   }
+
+  console.log(isUserExist, '62');
 
   const isPasswordMatched = await comparePassword(
     payload.password,
