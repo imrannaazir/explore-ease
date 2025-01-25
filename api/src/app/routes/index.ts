@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import AuthRoutes from '../modules/auth/auth.routes';
+import ExpeditionRoutes from '../modules/expedition/expedition.routes';
 
 const router = Router();
 
@@ -12,6 +13,10 @@ const routerModules: TRouteModule[] = [
   {
     path: '/auth',
     route: AuthRoutes,
+  },
+  {
+    path: '/expeditions',
+    route: ExpeditionRoutes,
   },
 ];
 

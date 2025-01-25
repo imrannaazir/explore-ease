@@ -22,7 +22,11 @@ export const SIGN_IN_ROUTE = "/sign-in";
  * These routes require authentication
  * @types {string[]}
  */
-export const PRIVET_ROUTES = ["/admin/dashboard", "/user/dashboard"];
+export const PRIVET_ROUTES = [
+  "/admin/dashboard",
+  "/admin/create-expedition",
+  "/user/dashboard",
+];
 
 /**
  * An array of routes those are not accessible by other role except admin
@@ -30,7 +34,7 @@ export const PRIVET_ROUTES = ["/admin/dashboard", "/user/dashboard"];
  * @types {string[]}
  */
 
-export const ADMIN_ROUTES = ["/admin/dashboard"];
+export const ADMIN_ROUTES = ["/admin/dashboard", "/admin/create-expedition"];
 
 /**
  * An array of routes those are not accessible by other role except user

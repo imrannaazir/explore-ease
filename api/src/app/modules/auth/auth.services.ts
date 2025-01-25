@@ -5,7 +5,7 @@ import sendEmail, {
   getValidateMailContent,
   TEmailPayload,
 } from '../../utils/send-mail';
-import { Status } from '../user/user.constants';
+import { Role, Status } from '../user/user.constants';
 import User from '../user/user.model';
 import { TJwtPayload, TSignInPayload, TSignUpPayload } from './auth.types';
 import {
@@ -14,6 +14,29 @@ import {
   hashPassword,
   verifyToken,
 } from './auth.utils';
+
+const seedAdmin = async () => {
+  console.log('Started seeding admin.');
+  try {
+    const hashedPassword = await hashPassword(config.super_admin.password!);
+    await User.updateOne(
+      { email: config.super_admin.email },
+      {
+        fullName: 'John Doe',
+        email: config.super_admin.email,
+        role: Role.ADMIN,
+        password: hashedPassword,
+        isVerified: true,
+        status: Status.ACTIVE,
+      },
+      { upsert: true },
+    );
+
+    console.log('Admin seeding done.');
+  } catch (error) {
+    console.log('Failed to seed admin');
+  }
+};
 
 const singUp = async (payload: TSignUpPayload) => {
   payload.password = await hashPassword(payload?.password);
@@ -217,5 +240,6 @@ const AuthServices = {
   verifyAccount,
   resendVerificationEmail,
   refreshAccessToken,
+  seedAdmin,
 };
 export default AuthServices;

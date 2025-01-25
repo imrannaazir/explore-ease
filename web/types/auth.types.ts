@@ -11,7 +11,7 @@ export type TUser = {
   password: string;
   isVerified: boolean;
   createdAt: Date;
-  updated: Date;
+  updatedAt: Date;
 };
 
 export type TJwtPayload = {

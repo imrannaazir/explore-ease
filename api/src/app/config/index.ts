@@ -26,9 +26,7 @@ export default {
   super_admin: {
     email: process.env.SUPER_ADMIN_EMAIL,
     password: process.env.SUPER_ADMIN_PASSWORD,
-    phone_number: process.env.SUPER_ADMIN_PHONE_NUMBER,
   },
-  demo_user_email: process.env.DEMO_USER_EMAIL,
   my_email_address: process.env.MY_EMAIL_ADDRESS,
   email_app_password: process.env.EMAIL_APP_PASSWORD,
 };

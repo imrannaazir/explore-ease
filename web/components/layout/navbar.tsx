@@ -57,7 +57,7 @@ export function Navbar() {
     <nav className="fixed top-0 w-full bg-black bg-opacity-50 backdrop-blur-md z-50">
       <Container className="">
         <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
+          <div className="flex items-center lg:justify-start  w-full justify-center">
             <Link href="/" className="text-white text-xl font-bold">
               SpaceVoyager
             </Link>

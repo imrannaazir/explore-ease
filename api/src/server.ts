@@ -5,6 +5,7 @@ import { Server } from 'http';
 import mongoose from 'mongoose';
 import app from './app';
 import config from './app/config';
+import AuthServices from './app/modules/auth/auth.services';
 let server: Server;
 const port = process.env.PORT || 3000;
 async function main() {
@@ -15,6 +16,7 @@ async function main() {
       );
     }
     await mongoose.connect(config.database_url as string);
+    await AuthServices.seedAdmin();
     server = app.listen(
       port,
 
