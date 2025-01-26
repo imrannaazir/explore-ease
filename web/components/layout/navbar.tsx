@@ -95,6 +95,20 @@ export function Navbar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                  <DropdownMenuLabel className="text-sm font-normal py-0">
+                    {user.fullName}
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <Link href={`/${user?.role?.toLowerCase()}/profile`}>
+                    <DropdownMenuItem className="cursor-pointer">
+                      Profile
+                    </DropdownMenuItem>
+                  </Link>
+                  <Link href={`/${user?.role?.toLowerCase()}/dashboard`}>
+                    <DropdownMenuItem className="cursor-pointer">
+                      Dashboard
+                    </DropdownMenuItem>
+                  </Link>
 
                   <DropdownMenuSeparator />
                   <DropdownMenuItem

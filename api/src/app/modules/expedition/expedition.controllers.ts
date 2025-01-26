@@ -35,9 +35,20 @@ const getSingleExpedition = catchAsync(async (req, res) => {
     message: 'Retrieved all expedition.',
   });
 });
+
+const getPopularDestinations = catchAsync(async (req, res) => {
+  const result = await ExpeditionServices.getPopularDestinations(req.query);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+    message: 'Most popular destination retrieved.',
+  });
+});
 const ExpeditionControllers = {
   postExpedition,
   getAllExpeditions,
   getSingleExpedition,
+  getPopularDestinations,
 };
 export default ExpeditionControllers;

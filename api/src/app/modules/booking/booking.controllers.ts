@@ -61,10 +61,22 @@ const getAllBookedExpeditions = catchAsync(async (req, res) => {
   });
 });
 
+const getBookingsPerMonth = catchAsync(async (req, res) => {
+  const result = await BookingServices.getBookingsPerMonth();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: StatusCodes.OK,
+    message: 'Bookings per months retrieved.',
+    data: result,
+  });
+});
+
 const BookingControllers = {
   bookExpedition,
   getAllMyBookedExpeditions,
   updateBooking,
   getAllBookedExpeditions,
+  getBookingsPerMonth,
 };
 export default BookingControllers;

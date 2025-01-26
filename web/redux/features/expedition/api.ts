@@ -1,7 +1,14 @@
 import { BookingStatus } from "@/constants";
 import baseApi from "@/redux/base-api";
 import { TagTypes } from "@/redux/tag-types";
-import { TBooking, TExpedition, TExpeditionInput, TResponse } from "@/types";
+import {
+  TBooking,
+  TBookingPerMonth,
+  TExpedition,
+  TExpeditionInput,
+  TPopularDestination,
+  TResponse,
+} from "@/types";
 
 const expeditionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -84,6 +91,22 @@ const expeditionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [TagTypes.EXPEDITION, TagTypes.Booking],
     }),
+    getBookingsPerMonth: builder.query<TResponse<TBookingPerMonth[]>, unknown>({
+      query: () => ({
+        url: `/bookings/get-bookings-per-month`,
+        method: "GET",
+      }),
+    }),
+
+    getPopularDestinations: builder.query<
+      TResponse<TPopularDestination[]>,
+      unknown
+    >({
+      query: () => ({
+        url: `/expeditions/get-popular-destination`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -95,4 +118,6 @@ export const {
   useGetAllMyBookedExpeditionsQuery,
   useGetAllBookedExpeditionsQuery,
   useUpdateBookingMutation,
+  useGetBookingsPerMonthQuery,
+  useGetPopularDestinationsQuery,
 } = expeditionApi;

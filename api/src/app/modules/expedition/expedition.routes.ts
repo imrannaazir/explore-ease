@@ -9,6 +9,11 @@ const router = Router();
 
 router.get('/get-all', ExpeditionControllers.getAllExpeditions);
 router.get('/get-single/:id', ExpeditionControllers.getSingleExpedition);
+router.get(
+  '/get-popular-destination',
+  auth(Role.ADMIN),
+  ExpeditionControllers.getPopularDestinations,
+);
 router.post(
   '/post',
   auth(Role.ADMIN),

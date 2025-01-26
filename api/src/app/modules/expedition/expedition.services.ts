@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
+import Booking from '../booking/booking.model';
 import { ExpeditionSearchableFields } from './expedition.constants';
 import Expedition from './expedition.model';
 import { TExpeditionInput } from './expedition.types';
@@ -34,9 +35,39 @@ const getSingleExpedition = async (id: string) => {
   return expedition;
 };
 
+export const getPopularDestinations = async (
+  query: Record<string, unknown>,
+) => {
+  const limit = Number(query.limit) || 5;
+
+  const popularDestinations = await Booking.aggregate([
+    {
+      $lookup: {
+        from: 'expeditions',
+        localField: 'expeditionId',
+        foreignField: '_id',
+        as: 'expedition',
+      },
+    },
+    { $unwind: '$expedition' },
+    {
+      $group: {
+        _id: '$expedition.destination',
+        bookings: { $sum: 1 },
+        totalRevenue: { $sum: '$expedition.price' },
+      },
+    },
+    { $sort: { bookings: -1 } },
+    { $limit: limit },
+  ]);
+
+  return popularDestinations;
+};
+
 const ExpeditionServices = {
   postExpedition,
   getAllExpeditions,
   getSingleExpedition,
+  getPopularDestinations,
 };
 export default ExpeditionServices;

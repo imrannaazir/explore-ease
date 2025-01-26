@@ -30,5 +30,11 @@ router.get(
   BookingControllers.getAllBookedExpeditions,
 );
 
+router.get(
+  '/get-bookings-per-month',
+  auth(Role.ADMIN),
+  BookingControllers.getBookingsPerMonth,
+);
+
 const BookingRoutes = router;
 export default BookingRoutes;

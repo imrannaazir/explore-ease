@@ -3,12 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { Calendar, Menu } from "lucide-react";
+import { Calendar, Menu, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
   { icon: Calendar, label: "Booking", href: "/user/dashboard" },
+  { icon: UserRound, label: "Profile", href: "/user/profile" },
 ];
 
 export function Sidebar() {

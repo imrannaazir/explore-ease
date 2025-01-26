@@ -109,10 +109,67 @@ const updateBooking = async (
   return updatedBookings;
 };
 
+export const getBookingsPerMonth = async () => {
+  const endDate = new Date();
+  const startDate = new Date(endDate);
+  startDate.setMonth(startDate.getMonth() - 11);
+
+  const bookingsPerMonth = await Booking.aggregate([
+    {
+      $match: {
+        bookingDate: { $gte: startDate, $lte: endDate },
+      },
+    },
+    {
+      $group: {
+        _id: {
+          year: { $year: '$bookingDate' },
+          month: { $month: '$bookingDate' },
+        },
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        date: {
+          $dateFromParts: {
+            year: '$_id.year',
+            month: '$_id.month',
+          },
+        },
+        count: 1,
+      },
+    },
+    { $sort: { date: 1 } },
+  ]);
+
+  // Fill in missing months with zero bookings
+  const filledBookingsPerMonth = [];
+  for (let i = 0; i < 12; i++) {
+    const currentDate = new Date(startDate);
+    currentDate.setMonth(currentDate.getMonth() + i);
+    const existingData = bookingsPerMonth.find(
+      (b) =>
+        b.date.getFullYear() === currentDate.getFullYear() &&
+        b.date.getMonth() === currentDate.getMonth(),
+    );
+    filledBookingsPerMonth.push(
+      existingData || {
+        date: currentDate,
+        count: 0,
+      },
+    );
+  }
+
+  return filledBookingsPerMonth;
+};
+
 const BookingServices = {
   bookExpedition,
   getAllMyBookedExpeditions,
   getAllBookedExpeditions,
   updateBooking,
+  getBookingsPerMonth,
 };
 export default BookingServices;

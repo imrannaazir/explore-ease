@@ -28,4 +28,15 @@ export type TBooking = {
   updatedAt: Date;
 };
 
+export type TPopularDestination = {
+  _id: string;
+  bookings: number;
+  totalRevenue: number;
+};
+
+export type TBookingPerMonth = {
+  date: Date;
+  count: number;
+};
+
 export type TExpeditionInput = z.infer<typeof expeditionSchema>;
