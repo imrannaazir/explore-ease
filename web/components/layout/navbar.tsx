@@ -23,6 +23,7 @@ import { TJwtPayload } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import Container from "../ui/container";
+import { NotificationBell } from "../ui/notification-bell";
 
 const navItems = [
   { title: "Home", href: "/" },
@@ -33,7 +34,6 @@ const navItems = [
 
 export function Navbar() {
   const { user } = useAppSelector(selectUser);
-  console.log(user, "36");
 
   const dispatch = useAppDispatch();
   const [skip, setSkip] = React.useState(true);
@@ -82,6 +82,11 @@ export function Navbar() {
               ))}
             </div>
           </div>
+          {user?.id && (
+            <div className="mr-4">
+              <NotificationBell />
+            </div>
+          )}
           <div className="hidden md:block md:ml-4">
             {user?.id ? (
               <DropdownMenu>

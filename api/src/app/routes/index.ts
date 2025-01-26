@@ -2,6 +2,7 @@ import { Router } from 'express';
 import AuthRoutes from '../modules/auth/auth.routes';
 import BookingRoutes from '../modules/booking/booking.routes';
 import ExpeditionRoutes from '../modules/expedition/expedition.routes';
+import NotificationRoutes from '../modules/notification/notification.routes';
 
 const router = Router();
 
@@ -22,6 +23,10 @@ const routerModules: TRouteModule[] = [
   {
     path: '/bookings',
     route: BookingRoutes,
+  },
+  {
+    path: '/notifications',
+    route: NotificationRoutes,
   },
 ];
 

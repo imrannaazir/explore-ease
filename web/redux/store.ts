@@ -1,17 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
+
 import baseApi from "./base-api";
-import rootReducer from "./root-reducer";
+import { authReducer } from "./features/auth/slice";
+import { notificationReducer } from "./features/notification/slice";
 
-export const store = () => {
-  return configureStore({
-    reducer: rootReducer,
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(baseApi.middleware),
-  });
-};
+export const store = configureStore({
+  reducer: {
+    [baseApi.reducerPath]: baseApi.reducer,
+    auth: authReducer,
+    notification: notificationReducer,
+  },
+  middleware: (getDefaultMiddlewares) =>
+    getDefaultMiddlewares({}).concat(baseApi.middleware),
+});
 
-// Infer the type of makeStore
-export type AppStore = ReturnType<typeof store>;
 // Infer the `RootState` and `AppDispatch` types from the store itself
-export type RootState = ReturnType<AppStore["getState"]>;
-export type AppDispatch = AppStore["dispatch"];
+export type RootState = ReturnType<typeof store.getState>;
+// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
+export type AppDispatch = typeof store.dispatch;

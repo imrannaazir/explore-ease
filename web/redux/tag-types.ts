@@ -1,7 +1,8 @@
 export enum TagTypes {
   USER = "USER",
   EXPEDITION = "EXPEDITION",
-  Booking = "Booking",
+  BOOKING = "BOOKING",
+  NOTIFICATION = "NOTIFICATION",
 }
 
 export const TagTypeList = Object.keys(TagTypes);

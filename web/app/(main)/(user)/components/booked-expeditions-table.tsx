@@ -133,7 +133,9 @@ export function BookedExpeditionsTable({ bookings }: { bookings: TBooking[] }) {
                         disabled={
                           item === booking?.status ||
                           isLoading ||
-                          item === BookingStatus.PENDING
+                          item === BookingStatus.PENDING ||
+                          (booking?.status === BookingStatus.ACCEPTED &&
+                            user?.role === Role.USER)
                         }
                         className={cn(
                           "capitalize cursor-pointer",

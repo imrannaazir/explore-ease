@@ -64,8 +64,6 @@ export const authApi = baseApi.injectEndpoints({
 
     resentVerificationEmail: builder.mutation<TResponse<null>, unknown>({
       query: ({ email }) => {
-        console.log(email, "blah email");
-
         return {
           url: "/auth/resend-verification-mail",
           method: "POST",

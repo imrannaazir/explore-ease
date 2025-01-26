@@ -1,12 +1,13 @@
 /* eslint-disable no-console */
 
 import colors from 'colors';
-import { Server } from 'http';
+import { createServer, Server } from 'http';
 import mongoose from 'mongoose';
 import app from './app';
 import config from './app/config';
 import AuthServices from './app/modules/auth/auth.services';
-let server: Server;
+import { initializeSocket } from './socket';
+let server: Server = createServer(app);
 const port = process.env.PORT || 3000;
 async function main() {
   try {
@@ -27,6 +28,7 @@ async function main() {
         );
       },
     );
+    initializeSocket(server);
   } catch (error) {
     console.log(error);
   }

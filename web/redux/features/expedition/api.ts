@@ -35,7 +35,7 @@ const expeditionApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags: [TagTypes.EXPEDITION, TagTypes.Booking],
+      providesTags: [TagTypes.EXPEDITION, TagTypes.BOOKING],
     }),
 
     getAllBookedExpeditions: builder.query<TResponse<TBooking[]>, unknown>({
@@ -45,7 +45,7 @@ const expeditionApi = baseApi.injectEndpoints({
           method: "GET",
         };
       },
-      providesTags: [TagTypes.EXPEDITION, TagTypes.Booking],
+      providesTags: [TagTypes.EXPEDITION, TagTypes.BOOKING],
     }),
 
     postExpedition: builder.mutation<TResponse<TExpedition>, unknown>({
@@ -89,7 +89,7 @@ const expeditionApi = baseApi.injectEndpoints({
         method: "POST",
         data: { status },
       }),
-      invalidatesTags: [TagTypes.EXPEDITION, TagTypes.Booking],
+      invalidatesTags: [TagTypes.EXPEDITION, TagTypes.BOOKING],
     }),
     getBookingsPerMonth: builder.query<TResponse<TBookingPerMonth[]>, unknown>({
       query: () => ({

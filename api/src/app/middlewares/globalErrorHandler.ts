@@ -11,8 +11,6 @@ import handleMongooseError from '../errors/handleMongooseError';
 import handleZodError from '../errors/handleZodError';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
-  console.log({ error, path: req.url, body: req.headers });
-
   const success = false;
   let statusCode = 500;
   let message = error.message || 'Internal server error.';
