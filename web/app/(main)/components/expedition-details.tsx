@@ -1,23 +1,10 @@
 import { Badge } from "@/components/ui/badge";
+import { TExpedition } from "@/types";
 import { format } from "date-fns";
 import { CalendarIcon, MapPinIcon, UsersIcon } from "lucide-react";
 import Image from "next/image";
 
-interface Expedition {
-  id: string;
-  name: string;
-  description: string;
-  destination: string;
-  departureDate: Date;
-  returnDate: Date;
-  price: number;
-  totalSeats: number;
-  availableSeats: number;
-  image: string;
-  highlights: string[];
-}
-
-export function ExpeditionDetails({ expedition }: { expedition: Expedition }) {
+export function ExpeditionDetails({ expedition }: { expedition: TExpedition }) {
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">{expedition.name}</h1>
@@ -47,14 +34,6 @@ export function ExpeditionDetails({ expedition }: { expedition: Expedition }) {
         </Badge>
       </div>
       <p className="text-gray-600">{expedition.description}</p>
-      <div>
-        <h2 className="text-xl font-semibold mb-2">Expedition Highlights</h2>
-        <ul className="list-disc list-inside space-y-1">
-          {expedition.highlights.map((highlight, index) => (
-            <li key={index}>{highlight}</li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 }

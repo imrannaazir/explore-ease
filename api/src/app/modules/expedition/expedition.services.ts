@@ -1,4 +1,6 @@
+import { StatusCodes } from 'http-status-codes';
 import QueryBuilder from '../../builder/QueryBuilder';
+import AppError from '../../errors/AppError';
 import { ExpeditionSearchableFields } from './expedition.constants';
 import Expedition from './expedition.model';
 import { TExpeditionInput } from './expedition.types';
@@ -24,5 +26,17 @@ const getAllExpeditions = async (query: Record<string, unknown>) => {
   return { data, meta };
 };
 
-const ExpeditionServices = { postExpedition, getAllExpeditions };
+const getSingleExpedition = async (id: string) => {
+  const expedition = await Expedition.findById(id);
+  if (!expedition?.id) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Expedition not founded.');
+  }
+  return expedition;
+};
+
+const ExpeditionServices = {
+  postExpedition,
+  getAllExpeditions,
+  getSingleExpedition,
+};
 export default ExpeditionServices;

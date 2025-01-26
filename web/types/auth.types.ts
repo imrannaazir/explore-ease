@@ -17,6 +17,7 @@ export type TUser = {
 export type TJwtPayload = {
   email: string;
   id: string;
+  fullName: string;
   role: Role;
   iat: number;
   exp: number;

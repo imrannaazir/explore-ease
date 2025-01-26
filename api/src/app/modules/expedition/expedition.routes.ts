@@ -8,7 +8,7 @@ import ExpeditionValidations from './expedition.validations';
 const router = Router();
 
 router.get('/get-all', ExpeditionControllers.getAllExpeditions);
-
+router.get('/get-single/:id', ExpeditionControllers.getSingleExpedition);
 router.post(
   '/post',
   auth(Role.ADMIN),

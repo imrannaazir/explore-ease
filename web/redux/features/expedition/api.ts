@@ -1,6 +1,6 @@
 import baseApi from "@/redux/base-api";
 import { TagTypes } from "@/redux/tag-types";
-import { TExpedition, TExpeditionInput, TResponse } from "@/types";
+import { TBooking, TExpedition, TExpeditionInput, TResponse } from "@/types";
 
 const expeditionApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -28,8 +28,33 @@ const expeditionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [TagTypes.EXPEDITION],
     }),
+    getSingleExpedition: builder.query<TResponse<TExpedition>, unknown>({
+      query: (id) => ({
+        url: `/expeditions/get-single/${id}`,
+        method: "GET",
+      }),
+      providesTags: [TagTypes.EXPEDITION],
+    }),
+    bookExpedition: builder.mutation<TResponse<TBooking>, unknown>({
+      query: ({
+        seats,
+        expeditionId,
+      }: {
+        seats: number;
+        expeditionId: string;
+      }) => ({
+        url: `/bookings/book/${expeditionId}`,
+        method: "POST",
+        data: { seats },
+      }),
+      invalidatesTags: [TagTypes.EXPEDITION],
+    }),
   }),
 });
 
-export const { usePostExpeditionMutation, useGetAllExpeditionQuery } =
-  expeditionApi;
+export const {
+  usePostExpeditionMutation,
+  useGetAllExpeditionQuery,
+  useGetSingleExpeditionQuery,
+  useBookExpeditionMutation,
+} = expeditionApi;

@@ -24,5 +24,20 @@ const getAllExpeditions = catchAsync(async (req, res) => {
     message: 'Retrieved all expeditions.',
   });
 });
-const ExpeditionControllers = { postExpedition, getAllExpeditions };
+
+const getSingleExpedition = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const result = await ExpeditionServices.getSingleExpedition(id);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result,
+    message: 'Retrieved all expedition.',
+  });
+});
+const ExpeditionControllers = {
+  postExpedition,
+  getAllExpeditions,
+  getSingleExpedition,
+};
 export default ExpeditionControllers;

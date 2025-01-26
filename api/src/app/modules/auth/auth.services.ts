@@ -45,6 +45,8 @@ const singUp = async (payload: TSignUpPayload) => {
   const { password: _, ...restUser } = user?._doc;
   const jwtPayload: TJwtPayload = {
     id: user?.id,
+    fullName: user?.fullName,
+
     email: user?.email,
     role: user?.role,
   };
@@ -73,6 +75,7 @@ const signIn = async (payload: TSignInPayload) => {
     {
       password: 1,
       email: 1,
+      fullName: 1,
       role: 1,
     },
   );
@@ -83,8 +86,6 @@ const signIn = async (payload: TSignInPayload) => {
       'Invalid one or more credentials.',
     );
   }
-
-  console.log(isUserExist, '62');
 
   const isPasswordMatched = await comparePassword(
     payload.password,
@@ -109,6 +110,7 @@ const signIn = async (payload: TSignInPayload) => {
 
   const jwtPayload: TJwtPayload = {
     email: isUserExist?.email,
+    fullName: isUserExist?.fullName,
     id: isUserExist?._id,
     role: isUserExist?.role,
   };
@@ -174,6 +176,8 @@ const resendVerificationEmail = async (email: string) => {
   }
 
   const jwtPayload: TJwtPayload = {
+    fullName: isUserExist?.fullName,
+
     id: isUserExist?._id,
     email: isUserExist.email,
     role: isUserExist.role,
@@ -215,6 +219,8 @@ const refreshAccessToken = async (token: string) => {
   }
 
   const jwtPayload: TJwtPayload = {
+    fullName: user?.fullName,
+
     id: user._id,
     email: user.email,
     role: user.role,

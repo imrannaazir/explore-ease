@@ -17,6 +17,8 @@ import * as React from "react";
 import { getAccessToken } from "@/actions/auth";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { useSignOutMutation } from "@/redux/features/auth/api";
+import { saveUser, selectUser } from "@/redux/features/auth/slice";
+import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { TJwtPayload } from "@/types";
 import { jwtDecode } from "jwt-decode";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -30,27 +32,32 @@ const navItems = [
 ];
 
 export function Navbar() {
-  const [token, setToken] = React.useState("");
+  const { user } = useAppSelector(selectUser);
+  console.log(user, "36");
+
+  const dispatch = useAppDispatch();
   const [skip, setSkip] = React.useState(true);
   const [isOpen, setIsOpen] = React.useState(false);
   const [signOut, { isLoading }] = useSignOutMutation();
 
-  let user;
-  if (token) {
-    user = jwtDecode(token || "") as TJwtPayload;
-  }
   const handleSignOut = async () => {
     await signOut("");
-    setSkip(false);
+    setSkip(!skip);
   };
 
   const getToken = async () => {
     const token = await getAccessToken();
-    setToken(token || "");
+    if (token) {
+      const decoded = jwtDecode(token) as TJwtPayload;
+      dispatch(saveUser(decoded || null));
+    } else {
+      dispatch(saveUser(null));
+    }
   };
 
   React.useEffect(() => {
     getToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skip]);
 
   return (
@@ -59,10 +66,10 @@ export function Navbar() {
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center lg:justify-start  w-full justify-center">
             <Link href="/" className="text-white text-xl font-bold">
-              SpaceVoyager
+              ExploreEase
             </Link>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:block ">
             <div className="ml-10 flex items-baseline space-x-4">
               {navItems.map((item) => (
                 <Link
@@ -75,13 +82,15 @@ export function Navbar() {
               ))}
             </div>
           </div>
-          <div className="hidden md:block">
+          <div className="hidden md:block md:ml-4">
             {user?.id ? (
               <DropdownMenu>
                 <DropdownMenuTrigger className="cursor-pointer" asChild>
                   <Avatar>
                     <AvatarImage src="" alt={user?.email} />
-                    <AvatarFallback>{user?.email?.slice(0, 2)}</AvatarFallback>
+                    <AvatarFallback className="uppercase">
+                      {user?.email?.slice(0, 2)}
+                    </AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">

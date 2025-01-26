@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose';
+import { model, now, Schema } from 'mongoose';
 import { BookingStatus } from './booking.constants';
 import { TBooking } from './booking.types';
 
@@ -12,7 +12,7 @@ const BookingSchema = new Schema<TBooking>(
       enum: Object.values(BookingStatus),
       default: BookingStatus.PENDING,
     },
-    bookingDate: { type: Date, required: true },
+    bookingDate: { type: Date, required: true, default: now() },
   },
 
   {

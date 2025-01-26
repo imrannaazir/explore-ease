@@ -1,40 +1,52 @@
+"use client";
 import Container from "@/components/ui/container";
+import { useGetSingleExpeditionQuery } from "@/redux/features/expedition/api";
+import { useParams } from "next/navigation";
+import { ReactNode } from "react";
 import { BookingForm } from "../../components/booking-form";
+import { BookingFormSkeleton } from "../../components/booking-form-skeleton";
 import { ExpeditionDetails } from "../../components/expedition-details";
-
-// In a real application, you would fetch this data from an API
-const expeditionData = {
-  id: "1",
-  name: "Mars Explorer",
-  description:
-    "Embark on an unforgettable journey to the Red Planet. Experience the thrill of being among the first humans to set foot on Mars, explore its rugged terrain, and conduct groundbreaking scientific experiments.",
-  destination: "Mars",
-  departureDate: new Date("2025-07-01"),
-  returnDate: new Date("2025-12-31"),
-  price: 500000,
-  totalSeats: 6,
-  availableSeats: 3,
-  image: "/placeholder.svg?height=400&width=800",
-  highlights: [
-    "Be among the first humans on Mars",
-    "Conduct cutting-edge scientific research",
-    "Experience Martian gravity",
-    "Spectacular views of Martian landscapes",
-    "State-of-the-art space habitat",
-  ],
-};
+import { ExpeditionDetailsSkeleton } from "../../components/expedition-details-skeleton";
 
 export default function ExpeditionDetailsPage() {
-  return (
-    <Container className=" py-10">
+  const { id } = useParams();
+  const { data, isFetching, isError } = useGetSingleExpeditionQuery(id, {
+    skip: !id,
+  });
+  const expedition = data?.data;
+
+  let content: ReactNode;
+  if (isFetching) {
+    content = (
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
-          <ExpeditionDetails expedition={expeditionData} />
+          <ExpeditionDetailsSkeleton />
         </div>
         <div>
-          <BookingForm expedition={expeditionData} />
+          <BookingFormSkeleton />
         </div>
       </div>
-    </Container>
-  );
+    );
+  } else if (!isFetching && isError) {
+    content = (
+      <div className="w-full">
+        <p className="text-sm text-destructive text-center">
+          Something went wrong.
+        </p>
+      </div>
+    );
+  } else {
+    content = (
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <ExpeditionDetails expedition={expedition! || {}} />
+        </div>
+        <div>
+          <BookingForm expedition={expedition! || {}} />
+        </div>
+      </div>
+    );
+  }
+
+  return <Container className="my-20">{content}</Container>;
 }
