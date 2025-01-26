@@ -13,5 +13,16 @@ const postExpedition = catchAsync(async (req, res) => {
     message: 'New expedition created successfully',
   });
 });
-const ExpeditionControllers = { postExpedition };
+
+const getAllExpeditions = catchAsync(async (req, res) => {
+  const result = await ExpeditionServices.getAllExpeditions(req.query);
+  sendResponse(res, {
+    statusCode: StatusCodes.OK,
+    success: true,
+    data: result?.data,
+    meta: result?.meta,
+    message: 'Retrieved all expeditions.',
+  });
+});
+const ExpeditionControllers = { postExpedition, getAllExpeditions };
 export default ExpeditionControllers;

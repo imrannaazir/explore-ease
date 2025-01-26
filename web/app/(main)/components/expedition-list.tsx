@@ -1,13 +1,17 @@
 "use client";
-import Container from "@/components/ui/container";
+
 import { ExpeditionCard } from "@/components/ui/expedition-card";
 import { ExpeditionSkeleton } from "@/components/ui/expedition-skeleton";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/use-debounce";
 import { useGetAllExpeditionQuery } from "@/redux/features/expedition/api";
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
 
-export function FeaturedExpeditions() {
+export function ExpeditionList() {
+  const [search, setSearch] = useState("");
+  const debouncedSearch = useDebounce(search, 300);
   const { data, isFetching, isError } = useGetAllExpeditionQuery({
-    limit: "3",
+    searchTerm: debouncedSearch,
   });
   const expeditions = data?.data || [];
   let content: ReactNode;
@@ -42,14 +46,17 @@ export function FeaturedExpeditions() {
       </div>
     );
   }
+
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-gray-100">
-      <Container>
-        <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12">
-          Featured Expeditions
-        </h2>
-        {content}
-      </Container>
-    </section>
+    <div className="space-y-6">
+      <Input
+        type="search"
+        placeholder="Search expeditions..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="max-w-md"
+      />
+      {content}
+    </div>
   );
 }

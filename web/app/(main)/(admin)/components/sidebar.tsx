@@ -3,15 +3,19 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import { BarChart, Home, Menu, Settings, Users } from "lucide-react";
+import { Calendar, Home, Menu, PlusCircleIcon, Tent } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { icon: Home, label: "Dashboard", href: "/dashboard" },
-  { icon: BarChart, label: "Analytics", href: "/dashboard/analytics" },
-  { icon: Users, label: "Customers", href: "/dashboard/customers" },
-  { icon: Settings, label: "Settings", href: "/dashboard/settings" },
+  { icon: Home, label: "Dashboard", href: "/admin/dashboard" },
+  { icon: Tent, label: "Expeditions", href: "/admin/expedition" },
+  {
+    icon: PlusCircleIcon,
+    label: "Create Expedition",
+    href: "/admin/create-expedition",
+  },
+  { icon: Calendar, label: "Booking", href: "/admin/booked-expedition" },
 ];
 
 export function Sidebar() {
