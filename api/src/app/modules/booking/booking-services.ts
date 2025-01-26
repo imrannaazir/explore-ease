@@ -2,6 +2,8 @@ import { StatusCodes } from 'http-status-codes';
 import mongoose, { now } from 'mongoose';
 import AppError from '../../errors/AppError';
 import Expedition from '../expedition/expedition.model';
+import { Role } from '../user/user.constants';
+import { BookingStatus } from './booking.constants';
 import Booking from './booking.model';
 
 const bookExpedition = async (
@@ -64,5 +66,53 @@ const bookExpedition = async (
   }
   return result;
 };
-const BookingServices = { bookExpedition };
+
+const getAllMyBookedExpeditions = async (userId: string) => {
+  const bookings = await Booking.find({
+    userId,
+  }).populate('expeditionId userId');
+
+  return bookings;
+};
+const getAllBookedExpeditions = async () => {
+  const bookings = await Booking.find().populate('expeditionId userId');
+
+  return bookings;
+};
+const updateBooking = async (
+  bookingId: string,
+  status: BookingStatus,
+  role: Role,
+) => {
+  const isBookingExist = await Booking.findById(bookingId);
+  if (!isBookingExist?._id) {
+    throw new AppError(StatusCodes.NOT_FOUND, 'Booking not founded.');
+  }
+
+  if (role === Role.USER && status === BookingStatus.ACCEPTED) {
+    throw new AppError(
+      StatusCodes.FORBIDDEN,
+      'User is not allowed to accept bookings.',
+    );
+  }
+
+  console.log({
+    bookingId,
+    status,
+    role,
+  });
+
+  const updatedBookings = await Booking.updateOne(
+    { _id: bookingId },
+    { status },
+  );
+  return updatedBookings;
+};
+
+const BookingServices = {
+  bookExpedition,
+  getAllMyBookedExpeditions,
+  getAllBookedExpeditions,
+  updateBooking,
+};
 export default BookingServices;

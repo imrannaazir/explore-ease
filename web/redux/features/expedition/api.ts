@@ -1,3 +1,4 @@
+import { BookingStatus } from "@/constants";
 import baseApi from "@/redux/base-api";
 import { TagTypes } from "@/redux/tag-types";
 import { TBooking, TExpedition, TExpeditionInput, TResponse } from "@/types";
@@ -20,6 +21,26 @@ const expeditionApi = baseApi.injectEndpoints({
       },
       providesTags: [TagTypes.EXPEDITION],
     }),
+    getAllMyBookedExpeditions: builder.query<TResponse<TBooking[]>, unknown>({
+      query: () => {
+        return {
+          url: "/bookings/get-my",
+          method: "GET",
+        };
+      },
+      providesTags: [TagTypes.EXPEDITION, TagTypes.Booking],
+    }),
+
+    getAllBookedExpeditions: builder.query<TResponse<TBooking[]>, unknown>({
+      query: () => {
+        return {
+          url: "/bookings/get-all",
+          method: "GET",
+        };
+      },
+      providesTags: [TagTypes.EXPEDITION, TagTypes.Booking],
+    }),
+
     postExpedition: builder.mutation<TResponse<TExpedition>, unknown>({
       query: (data: TExpeditionInput) => ({
         url: "/expeditions/post",
@@ -49,6 +70,20 @@ const expeditionApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [TagTypes.EXPEDITION],
     }),
+    updateBooking: builder.mutation<TResponse<TBooking>, unknown>({
+      query: ({
+        bookingId,
+        status,
+      }: {
+        status: BookingStatus;
+        bookingId: string;
+      }) => ({
+        url: `/bookings/update/${bookingId}`,
+        method: "POST",
+        data: { status },
+      }),
+      invalidatesTags: [TagTypes.EXPEDITION, TagTypes.Booking],
+    }),
   }),
 });
 
@@ -57,4 +92,7 @@ export const {
   useGetAllExpeditionQuery,
   useGetSingleExpeditionQuery,
   useBookExpeditionMutation,
+  useGetAllMyBookedExpeditionsQuery,
+  useGetAllBookedExpeditionsQuery,
+  useUpdateBookingMutation,
 } = expeditionApi;

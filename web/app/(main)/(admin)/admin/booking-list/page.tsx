@@ -1,11 +1,11 @@
 "use client";
+import { BookedExpeditionsTable } from "@/app/(main)/(user)/components/booked-expeditions-table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGetAllMyBookedExpeditionsQuery } from "@/redux/features/expedition/api";
+import { useGetAllBookedExpeditionsQuery } from "@/redux/features/expedition/api";
 import { ReactNode } from "react";
-import { BookedExpeditionsTable } from "../../components/booked-expeditions-table";
 
-export default function BookedExpeditionsPage() {
-  const { data, isFetching, isError } = useGetAllMyBookedExpeditionsQuery("");
+export default function BookedExpeditionsListPage() {
+  const { data, isFetching, isError } = useGetAllBookedExpeditionsQuery("");
   const bookings = data?.data;
   let content: ReactNode;
   if (isFetching) {

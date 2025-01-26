@@ -1,6 +1,7 @@
 import { BookingStatus } from "@/constants";
 import { expeditionSchema } from "@/schemas";
 import { z } from "zod";
+import { TUser } from "./auth.types";
 
 export type TExpedition = {
   _id: string;
@@ -18,8 +19,8 @@ export type TExpedition = {
 };
 export type TBooking = {
   _id: string;
-  userId: string;
-  expeditionId: string;
+  userId: string | TUser;
+  expeditionId: string | TExpedition;
   seatCount: number;
   status: BookingStatus;
   bookingDate: Date;

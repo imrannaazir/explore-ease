@@ -61,11 +61,11 @@ export function Navbar() {
   }, [skip]);
 
   return (
-    <nav className="fixed top-0 w-full bg-black bg-opacity-50 backdrop-blur-md z-50">
+    <nav className="fixed top-0 w-full   backdrop-blur-md z-50">
       <Container className="">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center lg:justify-start  w-full justify-center">
-            <Link href="/" className="text-white text-xl font-bold">
+            <Link href="/" className="text-primary text-xl font-bold">
               ExploreEase
             </Link>
           </div>
@@ -75,7 +75,7 @@ export function Navbar() {
                 <Link
                   key={item.title}
                   href={item.href}
-                  className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                  className="text-gray-700 hover:text-primary transition-all duration-300  px-3 py-2 rounded-md text-sm font-medium"
                 >
                   {item.title}
                 </Link>

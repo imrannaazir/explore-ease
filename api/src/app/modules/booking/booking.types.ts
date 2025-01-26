@@ -3,8 +3,8 @@ import { BookingStatus } from './booking.constants';
 
 export type TBooking = {
   _id: mongoose.Types.ObjectId;
-  userId: string;
-  expeditionId: string;
+  userId: mongoose.Types.ObjectId;
+  expeditionId: mongoose.Types.ObjectId;
   seatCount: number;
   status: BookingStatus;
   bookingDate: Date;

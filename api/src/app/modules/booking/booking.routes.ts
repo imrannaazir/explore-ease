@@ -13,6 +13,22 @@ router.post(
   validateRequest(BookingValidations.bookingValidator),
   BookingControllers.bookExpedition,
 );
+router.post(
+  '/update/:id',
+  auth(),
+  validateRequest(BookingValidations.updateBookingValidator),
+  BookingControllers.updateBooking,
+);
+router.get(
+  '/get-my',
+  auth(Role.USER),
+  BookingControllers.getAllMyBookedExpeditions,
+);
+router.get(
+  '/get-all',
+  auth(Role.ADMIN),
+  BookingControllers.getAllBookedExpeditions,
+);
 
 const BookingRoutes = router;
 export default BookingRoutes;
